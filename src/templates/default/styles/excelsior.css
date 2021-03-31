@@ -1,0 +1,106 @@
+:root {
+    --primary-color-real: #46C4E2;
+    --primary-color: #1fa5c7;
+    --secondary-color: #F16750;
+    /* Accentio Colors */
+    --blue: #38557C;
+    --cyan: #46C4E2;
+    --orange: #F16750;
+    --red: #C04E37;
+    --white: #fff;
+    --black: #000;
+}
+
+.excelsior-hero-button-xl, .excelsior-hero-button-md, .excelsior-hero-button-sm {
+    outline: none;
+    position: relative;
+    display: block;
+    color: var(--white);
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-weight: 700;
+    background-color: var(--primary-color);
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.excelsior-hero-button-xl {
+    padding: 0.5rem 1rem;
+    font-size: 100%;
+}
+
+.excelsior-hero-button-xl:hover, .excelsior-hero-button-md:hover, .excelsior-hero-button-sm:hover {
+    background-color: #39bee0;
+    border: 1px solid #84d7ec;
+    transition: all .2s cubic-bezier(1, 0, 0, 1);
+}
+
+.excelsior-hero-button-xl:active, .excelsior-hero-button-md:active, .excelsior-hero-button-sm:active {
+    background-color: #18809b;
+    border: 1px solid #1fa5c7;
+    transition: all .2s cubic-bezier(1, 0, 0, 1);
+}
+
+.secondary-color {
+    background-color: var(--secondary-color);
+}
+
+.excelsior-hero-button-xl.secondary-color, .excelsior-hero-button-md.secondary-color, .excelsior-hero-button-sm.secondary-color {
+    background-color: var(--secondary-color);
+}
+
+.excelsior-hero-button-xl.secondary-color:hover, .excelsior-hero-button-md.secondary-color:hover, .excelsior-hero-button-sm.secondary-color:hover {
+    background-color: #f5907f;
+    border: 1px solid #fbd6d0;
+}
+
+.excelsior-hero-button-xl.secondary-color:active, .excelsior-hero-button-md.secondary-color:active, .excelsior-hero-button-sm.secondary-color:active {
+    background-color: #ed3e21;
+    border: 1px solid #f16750;
+}
+
+.primary-muted-l-color {
+    background-color: transparent;
+}
+
+.excelsior-hero-button-xl.primary-muted-l-color, .excelsior-hero-button-md.primary-muted-l-color, .excelsior-hero-button-sm.primary-muted-l-color {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.excelsior-hero-button-xl.primary-muted-l-color:hover, .excelsior-hero-button-md.primary-muted-l-color:hover, .excelsior-hero-button-sm.primary-muted-l-color:hover {
+    color: white;
+}
+
+.excelsior-hero-button-xl.primary-muted-l-color:active, .excelsior-hero-button-md.primary-muted-l-color:active, .excelsior-hero-button-sm.primary-muted-l-color:active {
+    color: white;
+}
+
+
+.white-muted-color {
+    background-color: transparent;
+}
+
+.excelsior-hero-button-xl.white-muted-color, .excelsior-hero-button-md.white-muted-color, .excelsior-hero-button-sm.white-muted-color {
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.excelsior-hero-button-xl.white-muted-color:hover, .excelsior-hero-button-md.white-muted-color:hover, .excelsior-hero-button-sm.white-muted-color:hover {
+    color: white;
+    border: 1px solid #84d7ec;
+}
+
+.excelsior-hero-button-xl.white-muted-color:active, .excelsior-hero-button-md.white-muted-color:active, .excelsior-hero-button-sm.white-muted-color:active {
+    color: white;
+    border: 1px solid #84d7ec;
+}
+
+
+@media (min-width: 600px) {
+    .excelsior-hero-button-xl {
+        padding: 0.4rem 0.8rem;
+        font-size: 90%;
+    }
+}

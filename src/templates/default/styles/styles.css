@@ -1,11 +1,13 @@
 html {
     --color-bg: #fff;
-    --color-bg-2: #f8f8fc;
+    --color-bg-2: #f9fafa;
     --color-text: #1f203d;
     --color-bg-pre: #020205;
     --color-text-pre: #dedede;
     --color-blue-ac:#161229;
     --color-blue-ac-lighten:#4b3e8e;
+    --color-blue-ac: #1fa5c7;
+    --color-line: #d6dcdc;
     --max-width-container: 1100px;
     font-size: 16px;
     font-family: 'Lato', sans-serif;
@@ -18,7 +20,7 @@ body {
 }
 
 a {
-    color: var(--color-blue-ac-lighten);
+    color: var(--color-blue-ac);
 }
 
 h1, h2, h3, h4, h5 {
@@ -57,10 +59,11 @@ code {
 }
 
 .hero-section {
-    position: relative;
-    width: 100%;
     display: flex;
-    height: 380px;
+    position: relative;
+    justify-content: flex-end;
+    width: 100%;
+    min-height: 380px;
     flex-direction: column;
     box-sizing: border-box;
     padding-left: 5vw;
@@ -71,6 +74,7 @@ code {
 
 .hero-section-with-bg {
     color: #fff;
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.34);
 }
 
 .hero-section__background {
@@ -86,8 +90,7 @@ code {
     left: 0;
     width: 100%;
     height: 100%;
-    content: '';
-    background: linear-gradient(0deg ,rgba(0,22,43,.8) 10%,rgba(0,22,43,0) 60%);
+    background: linear-gradient(0deg,rgb(14, 23, 47, 0.80) 10%,rgb(14, 23, 47, 0.15) 60%);
     pointer-events: none;
     z-index: 1;
 }
@@ -102,6 +105,7 @@ code {
     z-index: 2;
     height: inherit;
     padding-bottom: 2.2rem;
+    padding-top: calc(5rem + 71px);
 }
 
 .hero-section__header {
@@ -109,10 +113,12 @@ code {
 }
 .hero-section__category {
     margin: 0.5rem 0 0 0;
+    line-height: 1.2em;
 }
 .hero-section__title {
     margin: 1.3rem 0 1.2rem 0;
-    font-size: 2.5rem;
+    font-size: 2.3rem;
+    line-height: 1.2em;
 }
 .hero-section__row {
     display:flex;
@@ -149,7 +155,7 @@ code {
 .main-section__article-tags {
     display: inline-block;
     width: 100%;
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid var(--color-line);
     justify-content: flex-start;
     padding: 1.4rem 0;
     margin-bottom: 1rem;
@@ -185,17 +191,104 @@ code {
     width: 100%;
 }
 
+.header {
+    position: absolute;
+    width: 100%;
+    top:0;
+    background: transparent;
+    box-shadow: none;
+    z-index: 3;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.header-transparent {
+    border-bottom: none;
+}
+
+.header__content {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 27px 1fr auto;
+    grid-auto-flow: row dense;
+    height: inherit;
+    margin: auto;
+    max-width: var(--max-width-container);
+    padding: 12px 5vw;
+}
+.header__brand {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: inherit;
+}
+
+.header__brand > .accentio-logo {
+    background-image: url('./public/img/brand_accentio_sm.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 52.58px;
+    height: 40px;
+    margin: 3px 10px;
+}
+.header__menu {
+    display: none;
+    position: relative;
+    font-weight: 600;
+    height: 100%;
+}
+.header__menu nav {
+    height: inherit;
+    width: 100%;
+    margin: auto;
+}
+.header__menu ul {
+    display: inline-flex;
+    width: 100%;
+    height: inherit;
+    justify-content: center;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    align-items: center;
+}
+.header__menu li {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    margin: 0px 25px;
+}
+.header__menu a {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.14em;
+    font-kerning: normal;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: ease-in-out;
+}
+.header__menu a:hover {
+    color: var(--color-blue-ac);
+}
+.header__cta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 @media (min-width: 600px) {
     html {
         font-size: 19px;
     }
 
     .hero-section {
-        height: 500px;
+        min-height: 500px;
     }
 
     .hero-section-with-bg {
-        height: 80vh;
+        min-height: 80vh;
     }
 
     .hero-section__date, .hero-section__author {
@@ -203,6 +296,7 @@ code {
     }
     .hero-section__title {
         margin: 1.3rem 0 1rem 0;
+        font-size: 2.4rem;
     }
 
     .main-section__content{

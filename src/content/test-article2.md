@@ -1,7 +1,6 @@
 ---
-title: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor sed do eiusmod tempor incididunt ut 
+title: Lorem ipsum dolor sit amet, consectetur adipisicing elit
 createdAt: 2020-12-06
-heroimage: ./public/img/photo.jpg
 author: Alvaro Gabriel
 category: Test Category
 tags:

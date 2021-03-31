@@ -6,14 +6,14 @@ module.exports = function () {
     var developmentMode = process.env.NODE_ENV == 'production' ? false : true;
     class BlogController {
         index(req, res) {
-            return res.render('index');
+            return blogSystem.renderTheme(res, 'index');
         }
 
         async article(req, res) {
             try {
                 const articleTitle = req.params.articleTitle;
                 const article = await blogSystem.readPage(articleTitle);
-                return res.render('articles', article);
+                return blogSystem.renderTheme(res, 'articles', article);
             } catch(e){
                 return res.status(e.statusCode).send(e.message);
             }

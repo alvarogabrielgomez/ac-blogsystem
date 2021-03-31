@@ -21,7 +21,7 @@ const md = require('markdown-it')({
     }
   });
 const Article = require('../articles/models/article.model');
-const settingsFilePath = path.resolve(__dirname, '../system.config.json');
+const settingsFilePath = path.resolve(__dirname, './system.config.json');
 const articlesPath = path.resolve(__dirname, '../../content');
 const articleExt = 'md';
 
@@ -133,6 +133,17 @@ class BlogSystem {
         return response;
     }
 
+        
+    /**
+    *  Parse a string from the md file to an object with the yaml front and the content
+    *  @param {string} articleRaw         String from md file
+    */
+    parseMd(articleRaw) {
+        let articleParsed = yamlFront.safeLoadFront(articleRaw)
+        articleParsed.__content = md.render(articleParsed.__content);
+        return articleParsed;
+    }
+
     /**
     * Save user settings into a file and load into actual instance.
     * @param {object} settings         A object key => value with the settings.
@@ -180,8 +191,7 @@ class BlogSystem {
                 if (dirent) {
                     const filePath = `${articlesPath}/${dirent.name}`;
                     const articleRaw = await this.readFile(filePath);
-                    let articleParsed = yamlFront.safeLoadFront(articleRaw)
-                    articleParsed.__content = md.render(articleParsed.__content);
+                    let articleParsed = this.parseMd(articleRaw);
                     const article = new Article().load(articleParsed);
                     resolve(article);
                 } else {
@@ -195,6 +205,20 @@ class BlogSystem {
                 throw e;
             }
         })
+    }
+
+    async renderTheme(res, route, payload = null) {
+        const themeSelected = await this.getSettings('theme');
+        if (themeSelected) {
+            const themePath = `${themeSelected}/views/${route}`;
+            if (payload) {
+                return res.render(themePath, payload);
+            } else {
+                return res.render(themePath);
+            }
+        } else {
+            return res.status(500).send('Error getting theme.');
+        }
     }
 
 }
