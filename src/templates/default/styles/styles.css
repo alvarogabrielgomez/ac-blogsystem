@@ -1,15 +1,18 @@
-html {
+:root {
     --color-bg: #fff;
     --color-bg-2: #f9fafa;
     --color-text: #1f203d;
     --color-bg-pre: #020205;
     --color-text-pre: #dedede;
-    --color-blue-ac:#161229;
+    --color-blue-ac-dark:#161229;
     --color-blue-ac-lighten:#4b3e8e;
     --color-blue-ac: #1fa5c7;
     --color-line: #d6dcdc;
     --padding-viewport: 5vw;
-    --max-width-container: 1100px;
+    --max-width-container: 1200px;
+}
+
+html {
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     line-height: 1.7rem;
@@ -26,6 +29,7 @@ a {
 
 h1, h2, h3, h4, h5 {
     font-family: 'Space Grotesk', sans-serif;
+    line-height: 1em;
 }
 
 article img {
@@ -348,6 +352,11 @@ code {
 @media (min-width: 600px) {
     html {
         font-size: 19px;
+    }
+
+    article img {
+        width: 100%;
+        margin-left: 0;
     }
 
     .hero-section {

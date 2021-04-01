@@ -5,6 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %> | Accentio Blog</title>
+    <meta name="description" content="<%= description %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:title" content="<%= title %> | Accentio Blog">
+    <meta itemprop="description" content="<%= description %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.accentiostudios.com/<%= slug %>">
+    <meta property="og:image" content="<%= heroimage %>">
+    <meta property="og:image:alt" content="Accentio Studios: Desarrollo de software, web y mobile de alta calidad, enfocado a la experiencia de usuario.">
+    <meta property="og:site_name" content="Accentio Studios">
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@AccentioStudios">
+    <meta name="twitter:title" content="<%= title %> | Accentio Blog">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="twitter:creator" content="@AccentioStudios">
+    <meta name="twitter:image:src" content="<%= heroimage %>">
+    <meta name="twitter:domain" content="blog.accentiostudios.com">
+    <!-- SEO -->
+    <link rel="canonical" href="https://blog.accentiostudios.com/<%= slug %>">
     <link rel="icon" type="image/png" href="./public/favicon.png"/>
     <%-"<style>"%>
     <%- include('../styles/styles.css') %>
@@ -61,6 +80,7 @@
                 </div>
         </div>
     </main>
+    <%- include('../widgets/related-posts/related-posts.widget.ejs') %>
     <%- include('../partials/footer.partial.ejs') %>
 </body>
 </html>

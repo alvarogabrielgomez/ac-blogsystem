@@ -11,8 +11,12 @@ module.exports = function () {
 
         async article(req, res) {
             try {
-                const articleTitle = req.params.articleTitle;
-                const article = await blogSystem.readPage(articleTitle);
+                const slug = req.params.slug;
+                const articlePath = await blogSystem.findArticle(slug);
+                const article = new Article()
+                    .load(await blogSystem.readArticle(articlePath));
+                
+                await blogSystem.readFrontArticle(slug);
                 return blogSystem.renderTheme(res, 'articles', article);
             } catch(e){
                 return res.status(e.statusCode).send(e.message);

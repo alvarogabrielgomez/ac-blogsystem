@@ -5,7 +5,7 @@ module.exports = function () {
 
     router
         .get('/', BlogController.index)
-        .get('/:articleTitle', BlogController.article)
+        .get('/:slug', BlogController.article)
         // .post('/', BlogController.create)
         // .get('/', BlogController.getAll)
         // .get('/:item_id', BlogController.getItem)

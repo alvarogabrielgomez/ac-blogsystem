@@ -1,6 +1,7 @@
 {
-    "blogLocation": "",
+    "blogLocation": "es",
+    "theme": "default",
+    "relatedPostsPageLimit": 6,
     "blogPagesMax": 5,
-    "blogPaginationLimit": 5,
-    "theme": "default"
+    "blogPaginationLimit": 5
 }

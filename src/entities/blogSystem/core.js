@@ -2,7 +2,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const util = require('util');
 const fsReadFile = util.promisify(fs.readFile);
-const fsReaddir = util.promisify(fs.readdir);
+// const fsReaddir = util.promisify(fs.readdir);
+const lineByLine = require('n-readlines');
 const yamlFront = require('yaml-front-matter');
 const hljs = require('highlight.js');
 const md = require('markdown-it')({
@@ -168,32 +169,69 @@ class BlogSystem {
     *  Returns the dirent of article file if exists
     *  @param {string} slug         Slug of article to find
     */
-     findFile(slug) {
+     findArticle(slug) {
         return new Promise(async (resolve, reject) => {
-            let allArticles = await fsReaddir(articlesPath, { withFileTypes: true });
-            const article = allArticles.filter(dirent => 
-                dirent.isFile() === true && 
-                path.basename(dirent.name) === `${slug}.${articleExt}`);
+            const path = `${articlesPath}/${slug}.${articleExt}`;
+            await fs.access(path, fs.constants.F_OK, (err) => {
+                if (err) {
+                    reject({
+                        statusCode: 404,
+                        message: "Page not found"
+                    });
+                } 
+                resolve(path);
+            });
+        });
+    }
 
-            resolve(article[0]);
+    readFrontArticle(slug) {
+        return new Promise(async(resolve, reject) => {
+            try {
+                const path = await this.findArticle(slug);
+                // read line by line until find tags and stop.
+                const liner = new lineByLine(path);
+                let line;
+                let readingYaml = false;
+                let readed = '';
+                while (line = liner.next()) {
+                    var lineString = line.toString('ascii') + '\n';
+                    if (lineString.includes('---')) {
+                        readed += lineString;
+                        if (readingYaml) {
+                            liner.close();
+                        }
+                        readingYaml = readingYaml ? false : true;
+                    }
+                    if (readingYaml && !lineString.includes('---')) {
+                        readed += lineString;
+                    }
+                }
+                const yamlParsed = this.parseMd(readed);
+                console.log(yamlParsed);
+                resolve(yamlParsed);
+
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 
     /**
-    *  Search for the article file, and return its content parsed
-    *  @param {string} slug         Slug of article to read
-    *  @returns {Article}           Returns an article object loaded with the content
+    *  Read the article file, and return its content parsed
+    *  @param {string} path         Path of article to read
+    *  @param {string} slug         Slug of page
+    *  @returns {object}            Returns an object loaded with the content
     */
-    readPage(slug) {
+    readArticle(path, slug) {
         return new Promise(async (resolve, reject) => {
             try {
-                const dirent = await this.findFile(slug);
-                if (dirent) {
-                    const filePath = `${articlesPath}/${dirent.name}`;
-                    const articleRaw = await this.readFile(filePath);
+                if (path) {
+                    const articleRaw = await this.readFile(path);
+                    // Parse Markdown and the metadata from yaml front
                     let articleParsed = this.parseMd(articleRaw);
-                    const article = new Article().load(articleParsed);
-                    resolve(article);
+                    // Load into articleParsed object the slug for SEO
+                    articleParsed.slug = slug;
+                    resolve(articleParsed);
                 } else {
                     reject({
                         statusCode: 404,
@@ -207,17 +245,27 @@ class BlogSystem {
         })
     }
 
+    /**
+    *  Render the html view loaded with a payload using the setted theme from the system.config.json
+    *  @param {Request} res         Request object from the Express Router
+    *  @param {string}  route       Route to render
+    *  @param {object}  payload     Object with the payload to pass it into view to render
+    */
     async renderTheme(res, route, payload = null) {
         const themeSelected = await this.getSettings('theme');
-        if (themeSelected) {
-            const themePath = `${themeSelected}/views/${route}`;
-            if (payload) {
-                return res.render(themePath, payload);
+        try {
+            if (themeSelected) {
+                const themePath = `${themeSelected}/views/${route}`;
+                if (payload) {
+                    return res.render(themePath, payload);
+                } else {
+                    return res.render(themePath);
+                }
             } else {
-                return res.render(themePath);
+                return res.status(500).send('Error getting theme settings.');
             }
-        } else {
-            return res.status(500).send('Error getting theme.');
+        } catch(e) {     
+            return res.status(500).send('Error rendering theme');
         }
     }
 
