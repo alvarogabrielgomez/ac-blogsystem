@@ -14,9 +14,9 @@ module.exports = function () {
                 const slug = req.params.slug;
                 const articlePath = await blogSystem.findArticle(slug);
                 const article = new Article()
-                    .load(await blogSystem.readArticle(articlePath));
-                
-                await blogSystem.readFrontArticle(slug);
+                    .load(await blogSystem.readArticle(articlePath, slug));
+            
+                const adasd = await blogSystem.getPosts();
                 return blogSystem.renderTheme(res, 'articles', article);
             } catch(e){
                 return res.status(e.statusCode).send(e.message);

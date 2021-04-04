@@ -1,7 +1,8 @@
-const fs = require('fs-extra');
+const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path');
 const util = require('util');
-const fsReadFile = util.promisify(fs.readFile);
+// const fsReadFile = util.promisify(fs.readFile);
 // const fsReaddir = util.promisify(fs.readdir);
 const lineByLine = require('n-readlines');
 const yamlFront = require('yaml-front-matter');
@@ -47,17 +48,19 @@ class BlogSystem {
 
     /**
     * It read a file and return its content, if do not exists return an empty string.
-    * @param {string} filePath         The full path with the file name and extension.
-    * @param {string} encode           The encode used to read the file, if empty it use utf8.
+    * @param {string} filePath           The full path with the file name and extension.
+    * @param {string} encoding           The encode used to read the file, if empty it use utf8.
     */
-    readFile(filePath, encode = 'utf8') {
+    readFile(filePath, encoding = 'utf8') {
         return new Promise(async (resolve, reject) => {
             let fileData = '';
-            const exists = await fs.pathExists(filePath);
-            if (exists) {
-                fileData = await fsReadFile(filePath, encode);
-            }
-            resolve(fileData);
+            await fs.access(filePath, fs.constants.F_OK, async (err) => {
+                if (err) {
+                    resolve(fileData);
+                } 
+                fileData = await fsPromises.readFile(filePath, { encoding });
+                resolve(fileData);
+            });
         });
     }
 
@@ -72,7 +75,7 @@ class BlogSystem {
             try {
                 let result = false;
                 if (mkDir) {
-                    await fs.ensureFile(filePath);
+                    // await fs.ensureFile(filePath);
                 }
                 fs.open(filePath, 'w+', (openErr, file) => {
                     if (openErr) { throw new Error(openErr); }
@@ -166,7 +169,7 @@ class BlogSystem {
     }
 
     /**
-    *  Returns the dirent of article file if exists
+    *  Returns the path of article file if exists
     *  @param {string} slug         Slug of article to find
     */
      findArticle(slug) {
@@ -184,10 +187,13 @@ class BlogSystem {
         });
     }
 
-    readFrontArticle(slug) {
+    /**
+    *  Returns the metadata of the file from the Yaml Front Matter
+    *  @param {string} path         Path of article to read
+    */
+    readFrontArticle(path) {
         return new Promise(async(resolve, reject) => {
             try {
-                const path = await this.findArticle(slug);
                 // read line by line until find tags and stop.
                 const liner = new lineByLine(path);
                 let line;
@@ -243,6 +249,14 @@ class BlogSystem {
                 throw e;
             }
         })
+    }
+
+    getPosts() {
+        return new Promise(async (resolve, reject) => {
+            let files = await fsPromises.readdir(articlesPath, { withFileTypes: true });
+            files = files.filter(dirent => dirent.isFile() && path.extname(dirent.name) === `.${articleExt}`);
+            resolve(files)
+        });
     }
 
     /**

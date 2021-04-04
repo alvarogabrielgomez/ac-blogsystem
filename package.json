@@ -1,14 +1,12 @@
 {
-  "name": "accentio-blog",
+  "name": "mintbook",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "webpack serve",
-    "build": "webpack --mode production --config ./webpack.config.js --progress"
+    "start": "node index.js"
   },
-  "keywords": [],
+  "keywords": ["blog", "node-cms", "markdown"],
   "author": "Alvaro Gabriel <alvaro@accentiostudios.com>",
   "license": "ISC",
   "dependencies": {
